@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub Home</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'create_event' %}">Create Event</a></li>
+            <li><a href="{% url 'event_list' %}">View Events</a></li>
+            <li><a href="{% url 'view_calendar' %}">View Calendar</a></li>
+            
+            {% if user.is_authenticated %}
+                <li>
+                    <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none; border:none; padding:0; font:inherit; color:blue; cursor:pointer;">Logout</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <section class="about">
+        <h1>Welcome to EventHub</h1>
+        <p>Your platform for managing and discovering events.</p>
+
+        <!-- Loop through events and show details -->
+        {% for event in events %}
+            <div class="event">
+                <h2>{{ event.name }}</h2>
+                <p>{{ event.description }}</p>
+                <p><strong>Date:</strong> {{ event.event_date }}</p>
+
+                {% if event.id %}
+                    <a href="{% url 'view_event' event.id %}">View Event</a>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    {% if event.id in registered_event_ids %}
+                        <form method="post" action="{% url 'cancel_registration' event.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-warning">Cancel Registration</button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{% url 'register_event' event.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-success">Register</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </section>
+
+    <footer>
+        <p>&copy; 2025 EventHub. All rights reserved.</p>
+    </footer>
+</body>
+</html>

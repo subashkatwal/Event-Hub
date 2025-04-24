@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub - View Calendar</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.js"></script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'create_event' %}">Create Event</a></li>
+            <li><a href="{% url 'event_list' %}">View Events</a></li>
+            <li><a href="{% url 'view_calendar' %}">View Calendar</a></li>
+            {% if user.is_authenticated %}
+            <li>
+                <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background:none; border:none; padding:0; font:inherit; color:blue; cursor:pointer;">Logout</button>
+                </form>
+            </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <h1>Event Calendar</h1>
+    <div id="calendar"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                events: [
+                    {% for event in events %}
+                        {
+                            title: '{{ event.name }}',
+                            start: '{{ event.event_date|date:"Y-m-d" }}',
+                            description: '{{ event.description }}'
+                        },
+                    {% endfor %}
+                ]
+            });
+        });
+    </script>
+
+    <footer>
+        <p>&copy; 2025 EventHub. All rights reserved.</p>
+    </footer>
+</body>

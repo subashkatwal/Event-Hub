@@ -1,0 +1,56 @@
+
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'create_event' %}">Create Event</a></li>
+            {% for event in events %}
+                <li><a href="{% url 'register_event' event.id %}">Register Event for {{ event.name }}</a></li>
+            {% endfor %}
+            <li><a href="{% url 'event_list' %}">View Events</a></li>
+            <li><a href="{% url 'view_calendar' %}">View Calendar</a></li>
+
+            {% if user.is_authenticated %}
+            <li>
+              <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" style="background:none; border:none; padding:0; font:inherit; color:blue; cursor:pointer;">Logout</button>
+              </form>
+          </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <section class="create-event-form">
+        <h2>Create a New Event</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="name">Event Name</label>
+            <input type="text" name="name" required>
+
+            <label for="description">Description</label>
+            <textarea name="description" required></textarea>
+
+            <label for="event_date">Event Date</label>
+            <input type="date" name="event_date" required>
+
+            <button type="submit">Create Event</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 EventHub. All rights reserved.</p>
+    </footer>
+</body>
