@@ -2,60 +2,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Events - EventHub</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* General Styles */
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    nav {
+      background-color: #1a1a1a;
+      color: #f4f4f4;
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-left a, .nav-right a, .nav-right form button {
+      text-decoration: none;
+      color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    .nav-left a:hover, .nav-right a:hover, .nav-right form button:hover {
+      color: #f39c12;
+    }
+
+    .nav-logo {
+      height: 40px;
+    }
+
+    .btn-nav {
+      background-color: #f39c12;
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .btn-nav:hover {
+      background-color: #e08e0b;
+    }
+
+    /* Section Styles */
+    section {
+      flex-grow: 1;
+      padding: 2rem;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: bold;
+      color: black;
+    }
+
+    /* Event Cards */
+    .event-cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .event-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      transition: transform 0.3s ease;
+      height: 350px; /* Fixed height */
+      color: black;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Title Styles */
+    .event-card h3 {
+      font-size: 1.5em;
+      margin: 20px 0; /* Add margin around title */
+      text-align: center;
+    }
+
+    /* Description Styles */
+    .event-description {
+      font-size: 1.1em;
+      line-height: 1.6;
+      padding: 0 15px;
+      margin-bottom: 20px; /* Add margin below description */
+      max-height: 72px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .event-description.expanded {
+      max-height: none;
+    }
+
+    .view-more {
+      color: #e08e0b;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: -10px;
+      display: inline-block;
+      padding-left: 15px;
+    }
+
+    /* Date Styles */
+    .event-date {
+      font-weight: bold;
+      margin-bottom: 20px;
+      padding: 0 15px;
+      text-align: center;
+    }
+
+    /* Register Button */
+    .event-card button {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      padding: 10px;
+      background-color: #e08e0b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .event-card button:hover {
+      background-color: #d07e0a;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      color: #f4f4f4;
+      padding: 1rem;
+      background-color: #1a1a1a;
+      margin-top: auto; /* Push footer to the bottom */
+    }
+
+    footer p {
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
 
+  <!-- Navbar -->
   <nav>
-      <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="{% url 'create_event' %}">Create Event</a></li>
-          <li><a href="{% url 'event_list' %}">View Events</a></li>
-          <li><a href="{% url 'view_calendar' %}">View Calendar</a></li>
-          {% if user.is_authenticated %}
-          <li>
-              <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-                  {% csrf_token %}
-                  <button type="submit" style="background:none; border:none; padding:0; font:inherit; color:blue; cursor:pointer;">Logout</button>
-              </form>
-          </li>
-          {% else %}
-              <li><a href="{% url 'login' %}">Login</a></li>
-              <li><a href="{% url 'signup' %}">Sign Up</a></li>
-          {% endif %}
-      </ul>
+    <div class="nav-left">
+      <img src="{% static 'images/logo.png' %}" alt="EventHub Logo" class="nav-logo me-4">
+      <a href="/" class="ms-3">Home</a>
+      <a href="{% url 'about' %}" class="ms-3">About</a>
+      <a href="{% url 'event_list' %}" class="ms-3">View Events</a>
+      <a href="{% url 'view_calendar' %}" class="ms-3">View Calendar</a>
+    </div>
+    <div class="nav-right">
+      {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-nav">Logout</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-nav me-2">Login</a>
+        <a href="{% url 'signup' %}" class="btn btn-nav">Register</a>
+      {% endif %}
+    </div>
   </nav>
 
+  <!-- Events Section -->
   <section>
     <h2>Upcoming Events</h2>
-    {% for event in events %}
-        <div>
+    <div class="event-cards-container">
+      {% if events %}
+        {% for event in events %}
+          <div class="event-card">
             <h3>{{ event.name }}</h3>
-            <p>{{ event.description }}</p>
-            <p>Date: {{ event.event_date }}</p>
+
+            <p class="event-description" id="desc-{{ event.id }}">
+              {{ event.description|truncatechars:200 }}
+            </p>
+
+            {% if event.description|length > 200 %}
+              <span class="view-more" onclick="toggleDescription({{ event.id }})">View more...</span>
+            {% endif %}
+
+            <p class="event-date">Date: {{ event.event_date }}</p>
 
             {% if user.is_authenticated %}
-              {% if event.id in registered_event_ids %}
-                <form method="post" action="{% url 'cancel_registration' event.id %}">{% csrf_token %}
-                  <button>Cancel Registration</button>
-                </form>
-              {% else %}
-                <form method="post" action="{% url 'register_event' event.id %}">{% csrf_token %}
-                  <button>Register</button>
-                </form>
-              {% endif %}
+              <form method="post" action="{% url 'register_event' event.id %}">{% csrf_token %}
+                <button>Register</button>
+              </form>
             {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <!-- If no events, show a placeholder -->
+        <div class="dummy-event-card">
+          <h3>No events available</h3>
+          <p>There are no upcoming events at the moment. Please check back later.</p>
         </div>
-    {% empty %}
-        <p>No events available.</p>
-    {% endfor %}
+      {% endif %}
+    </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 EventHub. All rights reserved.</p>
   </footer>
+
+  <!-- JS to toggle description -->
+  <script>
+    function toggleDescription(id) {
+      const desc = document.getElementById(`desc-${id}`);
+      desc.classList.toggle('expanded');
+      const viewMore = desc.nextElementSibling;
+      if (desc.classList.contains('expanded')) {
+        viewMore.textContent = "View less...";
+      } else {
+        viewMore.textContent = "View more...";
+      }
+    }
+  </script>
+
+  <!-- Auto-refresh the page every 30 seconds -->
+  <script>
+    setTimeout(function() {
+      location.reload();
+    }, 30000); // Refresh after 30 seconds
+  </script>
+
 </body>
 </html>

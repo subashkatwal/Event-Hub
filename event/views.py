@@ -34,12 +34,10 @@
 #     return redirect('event_list')
 
 
-from asyncio import events
 from urllib import request
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Event, Registration
-from datetime import date
 from .models import Event
 
 
@@ -79,15 +77,25 @@ def cancel_registration(request, event_id):
     Registration.objects.filter(user=request.user, event_id=event_id).delete()
     return redirect('event_list')
 
-@login_required
-def view_event(request, event_id):
-    event = get_object_or_404(Event, id=event_id)
-    return render(request, 'event/view_event.html', {'event': event})
+# @login_required
+# def event_list(request):
+#     events = Event.objects.all() 
+#     return render(request, 'event/event_list.html', {'event': events})
 
 def home(request):
     return render(request, 'event/home.html')
 
+@login_required
 def view_calendar(request):
-    
-    upcoming_events = Event.objects.filter(event_date__gte=date.today())
+    events = Event.objects.all() 
     return render(request, 'event/view_calendar.html', {'events': events})
+
+def about(request):
+    return render(request, 'event/about.html')
+
+
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, id=event_id)  # Fetch the event by ID
+    return render(request, 'event_detail.html', {'event': event})
+
+

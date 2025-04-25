@@ -56,7 +56,7 @@ ROOT_URLCONF = 'eventhub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/ 'user'/ 'templates'],
+        'DIRS': [BASE_DIR / 'event/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,9 +70,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'eventhub.wsgi.application'
 
+STATIC_URL = 'static/'
+
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+    os.path.join(BASE_DIR, 'eventhub/static'),
+    ]
+
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -117,7 +123,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-STATIC_URL = '/static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

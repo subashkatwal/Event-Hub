@@ -5,53 +5,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EventHub - View Calendar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.js"></script>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            background-color: #1a1a1a;
+            color: #f4f4f4;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-left a, .nav-right a, .nav-right form button {
+            text-decoration: none;
+            color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .nav-left a:hover, .nav-right a:hover, .nav-right form button:hover {
+            color: #f39c12;
+        }
+
+        .nav-logo {
+            height: 40px;
+        }
+
+        .btn-nav {
+            background-color: #f39c12;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .btn-nav:hover {
+            background-color: #e08e0b;
+        }
+
+        .calendar-container {
+            flex-grow: 1;
+            padding: 3rem 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+
+        #calendar {
+            max-width: 700px; /* Reduced the max width to make it smaller */
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            padding: 10px; /* Add some padding inside the calendar */
+        }
+
+        /* Adjust title to prevent overflow */
+        #calendar .fc-event-title {
+            white-space: nowrap;        /* Prevents text from wrapping */
+            overflow: hidden;           /* Hides overflowed text */
+            text-overflow: ellipsis;    /* Adds "..." at the end of overflowed text */
+        }
+
+        footer {
+            text-align: center;
+            color: #f4f4f4;
+            padding: 1rem;
+            background-color: #1a1a1a;
+        }
+    </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="{% url 'create_event' %}">Create Event</a></li>
-            <li><a href="{% url 'event_list' %}">View Events</a></li>
-            <li><a href="{% url 'view_calendar' %}">View Calendar</a></li>
-            {% if user.is_authenticated %}
-            <li>
-                <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" style="background:none; border:none; padding:0; font:inherit; color:blue; cursor:pointer;">Logout</button>
-                </form>
-            </li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'signup' %}">Sign Up</a></li>
-            {% endif %}
-        </ul>
-    </nav>
 
+<!-- Navbar -->
+<nav>
+    <div class="nav-left">
+        <img src="{% static 'images/logo.png' %}" alt="EventHub Logo" class="nav-logo me-4">
+        <a href="/" class="ms-3">Home</a>
+        <a href="{% url 'about' %}" class="ms-3">About</a>
+        <a href="{% url 'event_list' %}" class="ms-3">View Events</a>
+        <a href="{% url 'view_calendar' %}" class="ms-3">View Calendar</a>
+    </div>
+    <div class="nav-right">
+        {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-nav">Logout</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-nav me-2">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-nav">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- Calendar Section -->
+<div class="calendar-container container">
     <h1>Event Calendar</h1>
     <div id="calendar"></div>
+</div>
 
-    <script>
-        $(document).ready(function() {
-            $('#calendar').fullCalendar({
-                events: [
-                    {% for event in events %}
-                        {
-                            title: '{{ event.name }}',
-                            start: '{{ event.event_date|date:"Y-m-d" }}',
-                            description: '{{ event.description }}'
-                        },
-                    {% endfor %}
-                ]
-            });
+<!-- Footer -->
+<footer>
+    &copy; 2025 EventHub. All rights reserved.
+</footer>
+
+<script>
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+            events: [
+                {% for event in events %}
+                    {
+                        title: '{{ event.name }}',
+                        start: '{{ event.event_date|date:"Y-m-d" }}',
+                        description: '{{ event.description|escapejs }}'  <!-- Ensure descriptions are escaped properly -->
+                    },
+                {% endfor %}
+            ]
         });
-    </script>
+    });
+</script>
 
-    <footer>
-        <p>&copy; 2025 EventHub. All rights reserved.</p>
-    </footer>
 </body>
+</html>

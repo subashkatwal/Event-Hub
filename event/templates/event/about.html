@@ -4,14 +4,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EventHub Home</title>
+  <title>About Us - EventHub</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Roboto', sans-serif;
       background-color: #f4f4f4;
+      display: flex;
+  flex-direction: column;
+      min-height: 100vh;
     }
+
     nav {
       background-color: #1a1a1a;
       color: #f4f4f4;
@@ -20,22 +24,27 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .nav-left, .nav-right {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
+
     .nav-left a, .nav-right a, .nav-right form button {
       text-decoration: none;
       color: #f4f4f4;
       font-weight: bold;
     }
+
     .nav-left a:hover, .nav-right a:hover, .nav-right form button:hover {
       color: #f39c12;
     }
+
     .nav-logo {
       height: 40px;
     }
+
     .btn-nav {
       background-color: #f39c12;
       border: none;
@@ -44,55 +53,32 @@
       font-weight: bold;
       color: #fff;
     }
+
     .btn-nav:hover {
       background-color: #e08e0b;
     }
 
-    .hero-section {
-      height:81vh;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: white;
-    }
-
-    .hero-background {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+    .about-section {
       background-image: url("{% static 'images/background.jpg' %}");
       background-size: cover;
       background-position: center;
-      z-index: 0;
+      padding: 5rem 2rem;
+      color: black;
+      text-align: center;
     }
 
-    .hero-overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: url({% static "images/background.jfif" %});
-      z-index: 1;
+    .about-section h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
+    .about-section p {
+      font-size: 1.2em;
+      line-height: 1.8;
+      margin-bottom: 30px;
       max-width: 800px;
-      padding: 2rem;
-    }
-
-    .hero-content h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 1rem;
-    }
-
-    .hero-content p {
-      font-size: 1.2rem;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     footer {
@@ -100,10 +86,16 @@
       color: #f4f4f4;
       padding: 1rem;
       background-color: #1a1a1a;
+      margin-top:auto;
+    }
+
+    footer p {
+      margin: 0;
     }
   </style>
 </head>
 <body>
+
 
   <!-- Navbar -->
   <nav>
@@ -127,17 +119,17 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="hero-background"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h1>Welcome to EventHub</h1>
-      <p>Your platform to create, explore, and register for events—effortlessly and efficiently.</p>
-    </div>
+  <!-- About Section -->
+  <section class="about-section">
+    <h1>About EventHub</h1>
+    <p>EventHub is your go-to platform for discovering and managing events. Whether you're looking to attend or organize events, our platform connects you with the latest happenings in your area. With a user-friendly interface, EventHub makes event registration, scheduling, and management easy for everyone.</p>
+    <p>Join our community and be part of an exciting and ever-growing list of events that cater to all interests and industries. Stay informed, engaged, and connected with EventHub!</p>
   </section>
 
-  <footer>&copy; 2025 EventHub. All rights reserved.</footer>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 EventHub. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
