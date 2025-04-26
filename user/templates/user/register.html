@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register - EventHub</title>
+  <title>Login - EventHub</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -50,7 +50,7 @@
       background-color: #e08e0b;
     }
 
-    .register-container {
+    .login-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -58,33 +58,33 @@
       padding: 1rem;
     }
 
-    .register-card {
+    .login-card {
       background: #fff;
       border-radius: 1.5rem;
-      padding: 2.5rem;
+      padding: 0.5rem 1rem;
       width: 90%;
       max-width: 450px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
     }
 
-    .register-card h3 {
+    .login-card h3 {
       color: #000000;
       font-weight: bold;
     }
 
-    .register-card .form-control {
+    .login-card .form-control {
       border-radius: 10px;
       border: 1px solid #ccc;
     }
 
-    .register-card .btn-primary {
+    .login-card .btn-primary {
       background-color: #1a1a1a;
       border: none;
       border-radius: 10px;
       font-weight: bold;
     }
 
-    .register-card .btn-primary:hover {
+    .login-card .btn-primary:hover {
       background-color: #f39c12;
       border: none;
     }
@@ -124,6 +124,16 @@
       font-size: 1.1rem;
     }
 
+    .overlay-message {
+      margin-left: 40px;
+      border-radius: 10px;
+      color: white;
+      background-color: rgba(44, 42, 42, 0.7);
+      padding: 0;
+      line-height: 10px;
+      display: none;
+    }
+
     footer {
       text-align: center;
       color: #f4f4f4;
@@ -156,19 +166,19 @@
     </div>
   </nav>
 
-  <!-- Register Form and Image/Text -->
-  <div class="register-container">
+  <!-- Login Form and Image/Text -->
+  <div class="login-container">
     <!-- Left Side with Image and Text -->
     <div class="left-side">
       <div class="left-side-content">
-        <h1>Welcome to EventHub!</h1>
-        <p>Your go-to platform for discovering and managing events. Join us now and never miss an event!</p>
+        <h1>Welcome Back!</h1>
+        <p>Login to your EventHub account and explore upcoming events easily.</p>
       </div>
     </div>
 
-    <!-- Register Card (Form) -->
-    <div class="register-card">
-      <h3 class="text-center mb-4">Register</h3>
+    <!-- Login Card (Form) -->
+    <div class="login-card">
+      <h3 class="text-center mb-4">Login</h3>
       {% if error %}
         <div class="alert alert-danger">{{ error }}</div>
       {% endif %}
@@ -179,22 +189,40 @@
           <input type="text" class="form-control" name="username" required>
         </div>
         <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" name="email" required>
-        </div>
-        <div class="mb-3">
           <label class="form-label">Password</label>
           <input type="password" class="form-control" name="password" required>
         </div>
         <div class="d-grid">
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-primary">Login</button>
         </div>
       </form>
-      <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+      <p class="text-center mt-3">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+
+      {% if messages %}
+        <div class="overlay-message">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
   </div>
 
   <footer>&copy; 2025 EventHub. All rights reserved.</footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var toastMessage = document.querySelector('.overlay-message');
+      if (toastMessage) {
+        toastMessage.style.display = 'block'; // Show the toast message
+        setTimeout(function() {
+          toastMessage.style.display = 'none'; // Hide the toast message after 3 seconds
+        }, 3000);
+      }
+    });
+  </script>
 
 </body>
 </html>

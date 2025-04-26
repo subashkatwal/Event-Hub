@@ -10,5 +10,5 @@ urlpatterns = [
     path('cancel/<int:event_id>/', views.cancel_registration, name='cancel_registration'),
     path('calendar/', views.view_calendar, name='view_calendar'),
     path('about/', views.about, name='about'),
-    path('event/<int:event_id>/', views.event_detail, name='event_detail'),
+    path('event/<int:id>/', views.detail, name='detail'),
 ]

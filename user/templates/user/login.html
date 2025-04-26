@@ -61,7 +61,7 @@
     .login-card {
       background: #fff;
       border-radius: 1.5rem;
-      padding: 2.5rem;
+      padding: 0.5rem 1rem;
       width: 90%;
       max-width: 450px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
@@ -126,6 +126,16 @@
       font-size: 1.1rem;
     }
 
+    .overlay-message {
+    margin-left:40px; 
+      border-radius: 10px;
+      color:white;
+      background-color: rgba(44, 42, 42, 0.7);
+      padding:0;
+      line-height:10px;
+      display:block;
+    }
+
     footer {
       text-align: center;
       color: #f4f4f4;
@@ -171,9 +181,8 @@
     <!-- Login Card (Form) -->
     <div class="login-card">
       <h3 class="text-center mb-4">Login</h3>
-      {% if error %}
-        <div class="alert alert-danger">{{ error }}</div>
-      {% endif %}
+
+  
       <form method="POST">
         {% csrf_token %}
         <div class="mb-3">
@@ -190,9 +199,12 @@
       </form>
       <p class="text-center mt-3">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
     </div>
+
+  
   </div>
 
   <footer>&copy; 2025 EventHub. All rights reserved.</footer>
 
+  
 </body>
 </html>

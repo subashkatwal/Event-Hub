@@ -110,12 +110,15 @@
       font-size: 1.1em;
       line-height: 1.6;
       padding: 0 15px;
-      margin-bottom: 20px; /* Add margin below description */
-      max-height: 72px;
+      margin-bottom: 20px;
+      height: 85px; /* fixed height */
       overflow: hidden;
-      position: relative;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* number of lines to show */
+      -webkit-box-orient: vertical;
     }
-
+    
     .event-description.expanded {
       max-height: none;
     }
@@ -198,17 +201,13 @@
     <div class="event-cards-container">
       {% if events %}
         {% for event in events %}
+        <a href="{% url 'detail' event.id %}" class="text-decoration-none">
           <div class="event-card">
             <h3>{{ event.name }}</h3>
 
             <p class="event-description" id="desc-{{ event.id }}">
               {{ event.description|truncatechars:200 }}
             </p>
-
-            {% if event.description|length > 200 %}
-              <span class="view-more" onclick="toggleDescription({{ event.id }})">View more...</span>
-            {% endif %}
-
             <p class="event-date">Date: {{ event.event_date }}</p>
 
             {% if user.is_authenticated %}

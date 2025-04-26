@@ -93,9 +93,8 @@ def view_calendar(request):
 def about(request):
     return render(request, 'event/about.html')
 
-
-def event_detail(request, event_id):
-    event = get_object_or_404(Event, id=event_id)  # Fetch the event by ID
-    return render(request, 'event_detail.html', {'event': event})
+def detail(request, id):
+    event = get_object_or_404(Event, id=id)
+    return render(request, 'event/detail.html', {'event': event})
 
 
