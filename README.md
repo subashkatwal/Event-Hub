@@ -1,23 +1,23 @@
-# EventHub 🎉
+# EventHub 
 A full-featured event management web application built with **Django** and **SQLite**, where users can discover, create, and register for events. 
 
 ---
 
-## ✨ Features  
-- Browse events with images, descriptions, dates, and locations 📅  
-- User registration & authentication 🔑  
-- Create and manage events (for logged-in users) 📝  
+##  Features  
+- Browse events with images, descriptions, dates, and locations  
+- User registration & authentication  
+- Create and manage events (for logged-in users)  
 - Register / cancel registration for events   
 - Responsive event cards UI (Bootstrap 5 + custom CSS)   
 - Event calendar view 
-- Admin dashboard for managing events & users ⚙️  
+- Admin dashboard for managing events & users 
 
 ---
 
 ## 🚀 Getting Started  
 
 ### Prerequisites  
-- Python 3.10+ (tested with 3.13.7) 🐍  
+- Python 3.10+ (tested with 3.13.7)  
 - pip (Python package manager)  
 - Virtual environment (recommended)  
 
