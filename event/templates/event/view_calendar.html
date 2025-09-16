@@ -2,150 +2,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventHub - View Calendar</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.js"></script>
-    <style>
-        body {
-            background-color: #f4f4f4;
-            font-family: 'Roboto', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EventHub - View Calendar</title>
 
-        nav {
-            background-color: #1a1a1a;
-            color: #f4f4f4;
-            padding: 0.75rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .nav-left, .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-        .nav-left a, .nav-right a, .nav-right form button {
-            text-decoration: none;
-            color: #f4f4f4;
-            font-weight: bold;
-        }
+  <!-- FullCalendar -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.js"></script>
 
-        .nav-left a:hover, .nav-right a:hover, .nav-right form button:hover {
-            color: #f39c12;
-        }
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        .nav-logo {
-            height: 40px;
-        }
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: #ffffff; /* white background */
+      color: #333;
+      padding-top: 80px; /* navbar spacing */
+    }
 
-        .btn-nav {
-            background-color: #f39c12;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 5px;
-            font-weight: bold;
-            color: #fff;
-        }
+    /* Navbar */
+    nav {
+      background:white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: black;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #7c3828;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: black;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .btn-nav {
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--primary-gradient);
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      background: transparent;
+      color: black;
+    }
 
-        .btn-nav:hover {
-            background-color: #e08e0b;
-        }
+    .btn-nav:hover {
+      background: var(--primary-gradient);
+      color: var(--white);
+    }
+    .btn-register {
+      background: #7c3828;
+      border: none;
+      color: #fff;
+    }
 
-        .calendar-container {
-            flex-grow: 1;
-            padding: 3rem 2rem;
-        }
+    /* Calendar */
+    .calendar-container {
+      max-width: 1000px; /* width can be changed */
+      margin: 2rem auto;
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .calendar-container h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    #calendar {
+      min-height: 500px; /* change height here */
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            font-weight: bold;
-        }
+    /* Upcoming Events */
+    .upcoming-events {
+      max-width: 1000px;
+      margin: 3rem auto;
+      text-align: center;
+    }
+    .upcoming-events h3 {
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+    .event-card {
+      background: #fff;
+      color: #333;
+      border-radius: 0.8rem;
+      padding: 1rem; /* reduced padding */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+      font-size: 0.85rem; /* smaller font */
+    }
+    .event-card:hover {
+      transform: translateY(-3px);
+    }
+    .event-card h5 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    .event-card p {
+      margin-bottom: 0.4rem;
+    }
 
-        #calendar {
-            max-width: 700px; /* Reduced the max width to make it smaller */
-            margin: 0 auto;
-            background: #fff;
-            border-radius: 1.5rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            padding: 10px; /* Add some padding inside the calendar */
-        }
-
-        /* Adjust title to prevent overflow */
-        #calendar .fc-event-title {
-            white-space: nowrap;        /* Prevents text from wrapping */
-            overflow: hidden;           /* Hides overflowed text */
-            text-overflow: ellipsis;    /* Adds "..." at the end of overflowed text */
-        }
-
-        footer {
-            text-align: center;
-            color: #f4f4f4;
-            padding: 1rem;
-            background-color: #1a1a1a;
-        }
-    </style>
+    /* Footer */
+    footer {
+      background: #f9f9f9;
+      padding: 2rem;
+      text-align: center;
+      color: #555;
+      margin-top: 3rem;
+    }
+  </style>
 </head>
 <body>
 
 <!-- Navbar -->
 <nav>
-    <div class="nav-left">
-        <img src="{% static 'images/logo.png' %}" alt="EventHub Logo" class="nav-logo me-4">
-        <a href="/" class="ms-3">Home</a>
-        <a href="{% url 'about' %}" class="ms-3">About</a>
-        <a href="{% url 'event_list' %}" class="ms-3">View Events</a>
-        <a href="{% url 'view_calendar' %}" class="ms-3">View Calendar</a>
-    </div>
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">EH</div>
+      EventHub
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="active"><i class="bi bi-house"></i> Home</a></li>
+      <li><a href="{% url 'event_list' %}"><i class="bi bi-card-list"></i> Events</a></li>
+      <li><a href="{% url 'view_calendar' %}"><i class="bi bi-calendar-event"></i> Calendar</a></li>
+      <li><a href="{% url 'about' %}"><i class="bi bi-info-circle"></i> About</a></li>
+    </ul>
     <div class="nav-right">
-        {% if user.is_authenticated %}
-            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-nav">Logout</button>
-            </form>
-        {% else %}
-            <a href="{% url 'login' %}" class="btn btn-nav me-2">Login</a>
-            <a href="{% url 'register' %}" class="btn btn-nav">Register</a>
-        {% endif %}
+      {% if user.is_authenticated %}
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-nav btn-register">Logout</button>
+      </form>
+      {% else %}
+      <a href="{% url 'login' %}" class="btn-nav">Login</a>
+      <a href="{% url 'register' %}" class="btn-nav btn-register">Register</a>
+      {% endif %}
     </div>
+  </div>
 </nav>
 
-<!-- Calendar Section -->
-<div class="calendar-container container">
-    <h1>Event Calendar</h1>
-    <div id="calendar"></div>
+<!-- Calendar -->
+<div class="calendar-container">
+  <h1>Event Calendar</h1>
+  <div id="calendar"></div>
 </div>
 
+<!-- Upcoming Events -->
+<section class="upcoming-events">
+  <h3>Upcoming Events</h3>
+  <div class="row g-3">
+    {% for event in events|slice:":6" %}
+    <div class="col-md-4">
+      <div class="event-card">
+        <h5>{{ event.name }}</h5>
+        <p><i class="bi bi-calendar-event"></i> {{ event.event_date|date:"F j, Y" }}</p>
+        <p>{{ event.description|truncatewords:12 }}</p>
+      </div>
+    </div>
+    {% empty %}
+    <p>No upcoming events available.</p>
+    {% endfor %}
+  </div>
+</section>
+
 <!-- Footer -->
-<footer>
-    &copy; 2025 EventHub. All rights reserved.
-</footer>
 
 <script>
-    $(document).ready(function() {
-        $('#calendar').fullCalendar({
-            events: [
-                {% for event in events %}
-                    {
-                        title: '{{ event.name }}',
-                        start: '{{ event.event_date|date:"Y-m-d" }}',
-                        description: '{{ event.description|escapejs }}'  <!-- Ensure descriptions are escaped properly -->
-                    },
-                {% endfor %}
-            ]
-        });
+  $(document).ready(function() {
+    $('#calendar').fullCalendar({
+      height: 600, // calendar height can be changed
+      events: [
+        {% for event in events %}
+          {
+            title: '{{ event.name }}',
+            start: '{{ event.event_date|date:"Y-m-d" }}',
+            description: '{{ event.description|escapejs }}'
+          },
+        {% endfor %}
+      ]
     });
+  });
 </script>
 
 </body>

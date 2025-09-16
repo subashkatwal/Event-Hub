@@ -5,253 +5,273 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Events - EventHub</title>
+
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* General Styles */
+    :root {
+      --primary-gradient:#7c3828;
+      --primary-dark: #928DAB;
+      --white: #ffffff;
+    }
+
     body {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
       background-color: #f4f4f4;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      margin: 0;
+      padding-top: 80px; /* offset for navbar */
     }
 
     /* Navbar */
     nav {
-      background-color: #1a1a1a;
-      color: #f4f4f4;
-      padding: 0.75rem 2rem;
+      background:white;
+      backdrop-filter: blur(10px);
+      padding: 1rem 2rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-    }
-
-    .nav-left, .nav-right {
-      display: flex;
       align-items: center;
-      gap: 1rem;
-    }
-
-    .nav-left a, .nav-right a, .nav-right form button {
-      text-decoration: none;
-      color: #f4f4f4;
-      font-weight: bold;
-    }
-
-    .nav-left a:hover, .nav-right a:hover, .nav-right form button:hover {
-      color: #f39c12;
     }
 
     .nav-logo {
-      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: black;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary-gradient);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: black;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 1rem;
     }
 
     .btn-nav {
-      background-color: #f39c12;
-      border: none;
-      padding: 0.4rem 1rem;
-      border-radius: 5px;
-      font-weight: bold;
-      color: #fff;
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--primary-gradient);
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      background: transparent;
+      color: black;
     }
 
     .btn-nav:hover {
-      background-color: #e08e0b;
+      background: var(--primary-gradient);
+      color: var(--white);
     }
 
-    /* Section Styles */
+    .btn-register {
+      background: var(--primary-gradient);
+      color: var(--white);
+      border: none;
+    }
+
+    /* Events Section */
     section {
-      flex-grow: 1;
-      padding: 2rem;
+      padding: 3rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
-    h2 {
+    section h2 {
       text-align: center;
+      font-weight: 700;
       margin-bottom: 2rem;
-      font-weight: bold;
-      color: black;
+      color: #222;
     }
 
-    /* Event Cards */
     .event-cards-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
     }
 
     .event-card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-radius: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      background-color: #fff;
-      transition: transform 0.3s ease;
-      height: 350px; /* Fixed height */
-      color: black;
-      position: relative;
       cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 1.5rem 1rem 3rem;
+      position: relative;
+      min-height: 350px;
+      color: #222;
     }
 
     .event-card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
 
-    /* Title Styles */
     .event-card h3 {
-      font-size: 1.5em;
-      margin: 20px 0; /* Add margin around title */
-      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
     }
 
-    /* Description Styles */
     .event-description {
-      font-size: 1.1em;
-      line-height: 1.6;
-      padding: 0 15px;
-      margin-bottom: 20px;
-      height: 85px; /* fixed height */
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      max-height: 80px;
       overflow: hidden;
-      text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 3; /* number of lines to show */
+      -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
     }
-    
-    .event-description.expanded {
-      max-height: none;
+
+    .event-info {
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
     }
 
-    .view-more {
-      color: #e08e0b;
-      font-weight: bold;
+    .event-info i {
+      color: var(--primary-gradient);
+      margin-right: 0.4rem;
+    }
+
+    .btn-view-details {
+      background: var(--primary-gradient);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: -10px;
-      display: inline-block;
-      padding-left: 15px;
-    }
-
-    /* Date Styles */
-    .event-date {
-      font-weight: bold;
-      margin-bottom: 20px;
-      padding: 0 15px;
-      text-align: center;
-    }
-
-    /* Register Button */
-    .event-card button {
       position: absolute;
       bottom: 15px;
       right: 15px;
-      padding: 10px;
-      background-color: #e08e0b;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      font-weight: 600;
     }
 
-    .event-card button:hover {
-      background-color: #d07e0a;
+    .btn-view-details:hover {
+      background: #5c271e;
     }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      color: #f4f4f4;
-      padding: 1rem;
-      background-color: #1a1a1a;
-      margin-top: auto; /* Push footer to the bottom */
+    @media (max-width:768px){
+      .event-cards-container {
+        grid-template-columns: 1fr;
+      }
     }
 
-    footer p {
-      margin: 0;
-    }
+    .event-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav>
-    <div class="nav-left">
-      <img src="{% static 'images/logo.png' %}" alt="EventHub Logo" class="nav-logo me-4">
-      <a href="/" class="ms-3">Home</a>
-      <a href="{% url 'about' %}" class="ms-3">About</a>
-      <a href="{% url 'event_list' %}" class="ms-3">View Events</a>
-      <a href="{% url 'view_calendar' %}" class="ms-3">View Calendar</a>
-    </div>
-    <div class="nav-right">
-      {% if user.is_authenticated %}
-        <form method="POST" action="{% url 'logout' %}">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-nav">Logout</button>
-        </form>
-      {% else %}
-        <a href="{% url 'login' %}" class="btn btn-nav me-2">Login</a>
-        <a href="{% url 'signup' %}" class="btn btn-nav">Register</a>
-      {% endif %}
-    </div>
-  </nav>
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="logo-icon">EH</div>
+    EventHub
+  </a>
+  <ul class="nav-links">
+    <li><a href="/" class="active"><i class="bi bi-house"></i> Home</a></li>
+    <li><a href="{% url 'event_list' %}"><i class="bi bi-card-list"></i> Events</a></li>
+    <li><a href="{% url 'view_calendar' %}"><i class="bi bi-calendar-event"></i> Calendar</a></li>
+    <li><a href="{% url 'about' %}"><i class="bi bi-info-circle"></i> About</a></li>
+  </ul>
+  <div class="nav-right">
+    {% if user.is_authenticated %}
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-nav">Logout</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}" class="btn btn-nav me-2">Login</a>
+      <a href="{% url 'register' %}" class="btn btn-nav btn-register">Register</a>
+    {% endif %}
+  </div>
+</nav>
 
-  <!-- Events Section -->
-  <section>
-    <h2>Upcoming Events</h2>
-    <div class="event-cards-container">
-      {% if events %}
-        {% for event in events %}
-        <a href="{% url 'detail' event.id %}" class="text-decoration-none">
-          <div class="event-card">
-            <h3>{{ event.name }}</h3>
+<section>
+  <h2>Discover Amazing <span style="color: var(--primary-gradient)">Events</span></h2>
+  <p style="text-align:center; max-width:600px; margin:0 auto 2rem;">
+    Explore a variety of events tailored to your interests. Connect, learn, and grow with like-minded professionals.
+  </p>
 
-            <p class="event-description" id="desc-{{ event.id }}">
-              {{ event.description|truncatechars:200 }}
-            </p>
-            <p class="event-date">Date: {{ event.event_date }}</p>
+  <div class="event-cards-container">
+    {% if events %}
+      {% for event in events %}
+        <div class="event-card">
+  {% if event.image %}
+    <img src="{{ event.image.url }}" alt="{{ event.name }}" class="event-img">
+  {% else %}
+    <!-- fallback image if no image uploaded -->
+    <img src="https://source.unsplash.com/400x200/?event" alt="Event Image" class="event-img">
+  {% endif %}
 
-            {% if user.is_authenticated %}
-              <form method="post" action="{% url 'register_event' event.id %}">{% csrf_token %}
-                <button>Register</button>
-              </form>
-            {% endif %}
-          </div>
-        {% endfor %}
-      {% else %}
-        <!-- If no events, show a placeholder -->
-        <div class="dummy-event-card">
-          <h3>No events available</h3>
-          <p>There are no upcoming events at the moment. Please check back later.</p>
-        </div>
-      {% endif %}
-    </div>
-  </section>
+  <h3>{{ event.name }}</h3>
+  <p class="event-description">{{ event.description|truncatechars:200 }}</p>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 EventHub. All rights reserved.</p>
-  </footer>
+  <div class="event-info">
+    <span><i class="bi bi-calendar3"></i> {{ event.event_date }}</span>
+    <span><i class="bi bi-geo-alt"></i> {{ event.location }}</span>
+    <span><i class="bi bi-people"></i> {{ event.registered_count }} registered</span>
+  </div>
 
-  <!-- JS to toggle description -->
-  <script>
-    function toggleDescription(id) {
-      const desc = document.getElementById(`desc-${id}`);
-      desc.classList.toggle('expanded');
-      const viewMore = desc.nextElementSibling;
-      if (desc.classList.contains('expanded')) {
-        viewMore.textContent = "View less...";
-      } else {
-        viewMore.textContent = "View more...";
-      }
-    }
-  </script>
+  <a href="{% url 'detail' event.id %}" class="btn-view-details">View Details</a>
+</div>
 
-  <!-- Auto-refresh the page every 30 seconds -->
-  <script>
-    setTimeout(function() {
-      location.reload();
-    }, 30000); // Refresh after 30 seconds
-  </script>
+      {% endfor %}
+    {% else %}
+      <p style="text-align:center;">No events available at the moment.</p>
+    {% endif %}
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

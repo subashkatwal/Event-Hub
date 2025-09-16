@@ -41,7 +41,7 @@ from .models import Event, Registration
 from .models import Event
 
 
-@login_required
+# @login_required
 def event_list(request):
     events = Event.objects.all()
     
@@ -85,7 +85,10 @@ def cancel_registration(request, event_id):
 def home(request):
     return render(request, 'event/home.html')
 
-@login_required
+# def base(request):
+#  return render(request, 'event/base.html') 
+
+# @login_required
 def view_calendar(request):
     events = Event.objects.all() 
     return render(request, 'event/view_calendar.html', {'events': events})
